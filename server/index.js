@@ -114,17 +114,20 @@ io.on('connection', socket => {
 })
 
 function buildMsg(name, text) {
+    const options = {
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        timeZone: 'America/New_York'
+    };
+    const time = new Intl.DateTimeFormat('en-US', options).format(new Date());
+    
     return {
         name,
         text,
-        time: new Intl.DateTimeFormat('default', {
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric'
-        }).format(new Date())
-    }
+        time
+    };
 }
-
 // User functions 
 function activateUser(id, name, room) {
     const user = { id, name, room }
