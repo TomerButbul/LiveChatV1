@@ -81,7 +81,8 @@
 
         // Event listener to handle incoming messages
         socket.on('message', function (data) {
-            const { name, text, time } = data
+    activity.textContent = ""
+    const { name, text, time } = data
     const li = document.createElement('li')
     li.className = 'post'
     if (name === nameInput.value) li.className = 'post post--left'
