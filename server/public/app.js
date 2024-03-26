@@ -42,16 +42,30 @@ msgInput.addEventListener('keypress', () => {
     socket.emit('activity', nameInput.value)
 })
 //leave room
-function leaveRoom(e) {
-    socket.emit('leaveRoom');
-    usersList.textContent = ''; // Clear the user list
-    roomList.textContent = ''; // Clear the room list
+ffunction leaveChatRoom(socketId) {
+    const user = getUser(socketId);
+    if (user) {
+        const room = user.room;
+        if (room) {
+            socket.leave(room);
+            // Broadcast to the room that the user has left
+            io.to(room).emit('message', buildMsg(ADMIN, `${user.name} has left the room`));
+            
+            // Update user list for the room
+            io.to(room).emit('userList', {
+                users: getUsersInRoom(room)
+            });
+            
+            // Update rooms list for everyone
+            io.emit('roomList', {
+                rooms: getAllActiveRooms()
+            });
+            
+            // Remove the user from the state
+            userLeavesApp(socketId);
+        }
+    }
 }
-// Add a button for leaving the chat room
-
-leaveButton.textContent = 'Leave Room';
-leaveButton.addEventListener('click', leaveRoom);
-document.body.appendChild(leaveButton);
 
 
 // Listen for messages 
