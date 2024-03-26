@@ -21,22 +21,19 @@
             <button id="join" type="submit">Join</button>
         </form>
 
-        <!-- Add id to the chat container -->
-        <div id="chatContainer" style="display: none;">
-            <ul class="chat-display"></ul>
+        <ul class="chat-display"></ul>
 
-            <p class="user-list"></p>
+        <p class="user-list"></p>
 
-            <p class="room-list"></p>
+        <p class="room-list"></p>
 
-            <p class="activity"></p>
+        <p class="activity"></p>
 
-            <!-- Add id to the form for sending messages -->
-            <form id="messageForm" class="form-msg">
-                <input type="text" id="message" placeholder="Your message" required>
-                <button type="submit">Send</button>
-            </form>
-        </div>
+        <!-- Add id to the form for sending messages -->
+        <form id="messageForm" class="form-msg">
+            <input type="text" id="message" placeholder="Your message" required>
+            <button type="submit">Send</button>
+        </form>
     </main>
 
     <!-- Inline script to initialize the Socket.io connection and handle events -->
@@ -96,26 +93,9 @@
         socket.on('activity', function (name) {
             document.querySelector('.activity').textContent = `${name} is typing...`;
         });
-
-        // Listen for the enterRoom event
-        socket.on('enterRoom', () => {
-            // Show the chat container
-            document.getElementById('chatContainer').style.display = 'block';
-        });
-
-        // Listen for the disconnect event
-        socket.on('disconnect', () => {
-            // Hide the chat container
-            document.getElementById('chatContainer').style.display = 'none';
-        });
-
-        // Listen for the leaveRoom event (if you have one)
-        socket.on('leaveRoom', () => {
-            // Hide the chat container
-            document.getElementById('chatContainer').style.display = 'none';
-        });
     </script>
 </body>
 
 </html>
+
 
