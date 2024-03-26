@@ -14,20 +14,32 @@
 
 <body>
     <main>
-        <!-- Add id to the form for joining the chat room -->
-        <form id="joinForm" class="form-join">
-            <input type="text" id="name" maxlength="16" placeholder="Your name" size="5" required>
-            <input type="text" id="room" placeholder="Chat room" size="5" required>
-            <button id="join" type="submit">Join</button>
-        </form>
-
-        <ul class="chat-display"></ul>
-
-        <p class="user-list"></p>
-
-        <p class="room-list"></p>
-
-        <p class="activity"></p>
+                <!-- Waiting Room -->
+                <div id="waitingRoom">
+                    <form id="joinForm" class="form-join">
+                        <input type="text" id="name" maxlength="16" placeholder="Your name" size="5" required>
+                        <input type="text" id="room" placeholder="Chat room" size="5" required>
+                        <button id="join" type="submit">Join</button>
+                    </form>
+        
+                    <p class="user-list"></p>
+        
+                    <p class="room-list"></p>
+        
+                    <p class="activity"></p>
+                </div>
+        
+                <!-- Chat Room -->
+                <div id="chatRoom" style="display: none;">
+                    <ul class="chat-display"></ul>
+        
+                    <form id="messageForm" class="form-msg">
+                        <input type="text" id="message" placeholder="Your message" required>
+                        <button type="submit">Send</button>
+                    </form>
+                </div>
+            </main>
+        </body>
 
         <!-- Add id to the form for sending messages -->
         <form id="messageForm" class="form-msg">
@@ -41,12 +53,24 @@
         const socket = io('https://livechattomer.onrender.com'); // Replace with your server URL
 
         // Function to join the chat room
-        document.getElementById('joinForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const room = document.getElementById('room').value;
-            socket.emit('enterRoom', { name, room });
-        });
+document.getElementById('joinForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const room = document.getElementById('room').value;
+    socket.emit('enterRoom', { name, room });
+
+    // Add a callback function to handle the response from the server
+    socket.on('joinResult', function (data) {
+        if (data.success) {
+            // If the user successfully joined the room, hide the waiting room and show the chat room
+            document.getElementById('waitingRoom').style.display = 'none';
+            document.getElementById('chatRoom').style.display = 'block';
+        } else {
+            // If there was an error, show an error message
+            alert(data.message);
+        }
+    });
+});
 
         // Function to send a message
         document.getElementById('messageForm').addEventListener('submit', function (e) {
@@ -97,5 +121,6 @@
 </body>
 
 </html>
+
 
 
