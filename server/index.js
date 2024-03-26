@@ -39,6 +39,16 @@ io.on('connection', socket => {
 
     socket.on('enterRoom', ({ name, room }) => {
 
+        //check to see if open
+    const usersInRoom = getUsersInRoom(room);
+    const userCount = usersInRoom.length;
+
+    if (userCount >= 2) {
+        // Room is full, emit a message or take appropriate action
+        socket.emit('message', buildMsg(ADMIN, `Sorry, the ${room} chat room is full.`));
+        return;
+    }
+
         // leave previous room 
         const prevRoom = getUser(socket.id)?.room
 
