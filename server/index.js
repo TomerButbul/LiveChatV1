@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const PORT = process.env.PORT || 3500
-const ADMIN = "Admin"
+const ADMIN = "HelpDesk"
 
 const app = express()
 
@@ -35,7 +35,7 @@ io.on('connection', socket => {
     console.log(`User ${socket.id} connected`)
 
     // Upon connection - only to user 
-    socket.emit('message', buildMsg(ADMIN, "Welcome to Chat App!"))
+    socket.emit('message', buildMsg(ADMIN, "Welcome To HelpDesk live chat, What is the issue you are having?"))
 
     socket.on('enterRoom', ({ name, room }) => {
 
@@ -82,7 +82,7 @@ io.on('connection', socket => {
         userLeavesApp(socket.id)
 
         if (user) {
-            io.to(user.room).emit('message', buildMsg(ADMIN, `${user.name} has left the room`))
+            io.to(user.room).emit('message', buildMsg(ADMIN, `${user.name} has left the chat`))
 
             io.to(user.room).emit('userList', {
                 users: getUsersInRoom(user.room)
@@ -156,7 +156,28 @@ function getAllActiveRooms() {
     return Array.from(new Set(UsersState.users.map(user => user.room)))
 }
 // Function to leave the chat room
-function leaveChatRoom() {
-    socket.leave('roomName');
-    // Add any additional cleanup or actions here if needed
+function leaveChatRoom(socketId) {
+    const user = getUser(socketId);
+    if (user) {
+        const room = user.room;
+        if (room) {
+            socket.leave(room);
+            // Broadcast to the room that the user has left
+            io.to(room).emit('message', buildMsg(ADMIN, `${user.name} has left the room`));
+            
+            // Update user list for the room
+            io.to(room).emit('userList', {
+                users: getUsersInRoom(room)
+            });
+            
+            // Update rooms list for everyone
+            io.emit('roomList', {
+                rooms: getAllActiveRooms()
+            });
+            
+            // Remove the user from the state
+            userLeavesApp(socketId);
+        }
+    }
 }
+
