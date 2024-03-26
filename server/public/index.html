@@ -57,8 +57,12 @@
     });
 
     // Function to leave the chat room
-    document.getElementById('leave').addEventListener('click', function (e) {
-        socket.emit('room'); // Emit 'leaveRoom' event to the server
+    // Function to leave the chat room
+        document.getElementById('leave').addEventListener('click', function () {
+          socket.emit('leaveRoom'); // Emit 'leaveRoom' event to the server
+          window.location.reload(); // Reload the page on leave
+        });
+
 
         // Show the join button and hide the leave button
         document.getElementById('join').style.display = 'inline-block';
