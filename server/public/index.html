@@ -82,7 +82,7 @@
         // Event listener to handle incoming messages
         socket.on('message', function (data) {
             const { name, text, time } = data;
-            const message = `<li>${name} (${time}): ${text}<.post>`;
+            const message = `<li>${name} (${time}): ${text}</li>`;
             document.querySelector('.chat-display').innerHTML += message;
         });
 
