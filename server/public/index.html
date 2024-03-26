@@ -57,12 +57,13 @@
          // Event listener to handle room full event
          socket.on('roomFull', function () {
         // Hide everything except the leave button
-        document.getElementById('joinForm').style.display = 'none';
-        document.querySelector('.chat-display').style.display = 'none';
-        document.querySelector('.user-list').style.display = 'none';
-        document.querySelector('.room-list').style.display = 'none';
-        document.querySelector('.activity').style.display = 'none';
-        document.getElementById('leave').style.display = 'block';
+         </form>
+        <ul class="chat-display" style="display: none;"></ul>
+        <p class="user-list" style="display: none;"></p>
+        <p class="room-list" style="display: none;"></p>
+        <p class="activity" style="display: none;"></p>
+        <!-- Add id to the form for sending messages -->
+        <form id="messageForm" class="form-msg" style="display: none;">
         
          });
         // Function to leave the chat room
