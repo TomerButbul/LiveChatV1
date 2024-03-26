@@ -157,6 +157,6 @@ function getAllActiveRooms() {
 }
 // Function to leave the chat room
 function leaveChatRoom() {
-    socket.emit('leaveRoom');
+    socket.leave('roomName');
     // Add any additional cleanup or actions here if needed
 }
