@@ -16,10 +16,13 @@
     <main>
         <!-- Add id to the form for joining the chat room -->
         <form id="joinForm" class="form-join">
-            <input type="text" id="name" maxlength="16" placeholder="Your name" size="5" required>
-            <input type="text" id="room" placeholder="Chat room" size="5" required>
-            <button id="join" type="submit">Join</button>
+    <input type="text" id="name" maxlength="16" placeholder="Your name" size="5" required>
+    <input type="text" id="room" placeholder="Chat room" size="5" required>
+    <button id="join" type="submit">Join</button>
+    <!-- Add a button for leaving the chat room -->
+    <button id="leave" type="button" style="display: none;">Leave</button>
         </form>
+
 
         <ul class="chat-display"></ul>
 
@@ -41,12 +44,26 @@
         const socket = io('https://livechattomer.onrender.com'); // Replace with your server URL
 
         // Function to join the chat room
-        document.getElementById('joinForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const room = document.getElementById('room').value;
-            socket.emit('enterRoom', { name, room });
-        });
+document.getElementById('joinForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const room = document.getElementById('room').value;
+    socket.emit('enterRoom', { name, room });
+
+    // Hide the join button and show the leave button
+    document.getElementById('join').style.display = 'none';
+    document.getElementById('leave').style.display = 'inline-block';
+});
+
+// Function to leave the chat room
+document.getElementById('leave').addEventListener('click', function () {
+    socket.emit('leaveRoom');
+
+    // Show the join button and hide the leave button
+    document.getElementById('join').style.display = 'inline-block';
+    document.getElementById('leave').style.display = 'none';
+});
+
 
         // Function to send a message
         document.getElementById('messageForm').addEventListener('submit', function (e) {
