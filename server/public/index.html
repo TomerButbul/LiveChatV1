@@ -41,6 +41,7 @@
 
     <!-- Inline script to initialize the Socket.io connection and handle events -->
   <!-- Inline script to initialize the Socket.io connection and handle events -->
+<!-- Inline script to initialize the Socket.io connection and handle events -->
 <script>
     const socket = io('https://livechattomer.onrender.com'); // Replace with your server URL
 
@@ -57,16 +58,9 @@
     });
 
     // Function to leave the chat room
-    // Function to leave the chat room
-        document.getElementById('leave').addEventListener('click', function () {
-          socket.emit('leaveRoom'); // Emit 'leaveRoom' event to the server
-          window.location.reload(); // Reload the page on leave
-        });
-
-
-        // Show the join button and hide the leave button
-        document.getElementById('join').style.display = 'inline-block';
-        document.getElementById('leave').style.display = 'none';
+    document.getElementById('leave').addEventListener('click', function () {
+        socket.emit('leaveRoom'); // Emit 'leaveRoom' event to the server
+        window.location.reload(); // Reload the page on leave
     });
 
     // Function to send a message
