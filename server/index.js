@@ -35,7 +35,7 @@ io.on('connection', socket => {
     console.log(`User ${socket.id} connected`)
 
     // Upon connection - only to user 
-    socket.emit('message', buildMsg(ADMIN, "Welcome To HelpDesk live chat, What is the issue you are having?"))
+    socket.emit('message', buildMsg(ADMIN, "Welcome To HelpDesk live chat, Enter Ticket Number"))
 
     socket.on('enterRoom', ({ name, room }) => {
 
