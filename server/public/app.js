@@ -47,7 +47,7 @@ function leaveChatRoom(socketId) {
     if (user) {
         const room = user.room;
         if (room) {
-            socket.leave(room);
+            socket.emit('leaveRoom',{
             // Broadcast to the room that the user has left
             io.to(room).emit('message', buildMsg(ADMIN, `${user.name} has left the room`));
             
