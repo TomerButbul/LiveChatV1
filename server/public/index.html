@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,15 +22,10 @@
             <!-- Add a button for leaving the chat room -->
             <button id="leave" type="button" style="display: none;">Leave</button>
         </form>
-
         <ul class="chat-display" style="display: none;"></ul>
-
         <p class="user-list" style="display: none;"></p>
-
         <p class="room-list" style="display: none;"></p>
-
         <p class="activity" style="display: none;"></p>
-
         <!-- Add id to the form for sending messages -->
         <form id="messageForm" class="form-msg" style="display: none;">
             <input type="text" id="message" placeholder="Your message" required>
@@ -41,21 +35,17 @@
 <!-- Inline script to initialize the Socket.io connection and handle events -->
     <script>
         const socket = io('https://livechattomer.onrender.com'); // Replace with your server URL
-
         // Function to join the chat room
         document.getElementById('joinForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const name = document.getElementById('name').value;
             const room = document.getElementById('room').value;
             socket.emit('enterRoom', { name, room });
-
             // Hide the join button and show the leave button
             document.getElementById('join').style.display = 'none';
             document.getElementById('leave').style.display = 'inline-block';
-
             // Hide the ticket ID box
             document.getElementById('room').style.display = 'none';
-
             // Show the message input field and send button
             document.getElementById('messageForm').style.display = 'block';
             document.querySelector('.chat-display').style.display = 'block';
@@ -63,13 +53,11 @@
             document.querySelector('.room-list').style.display = 'block';
             document.querySelector('.activity').style.display = 'block';
         });
-
         // Function to leave the chat room
         document.getElementById('leave').addEventListener('click', function () {
             socket.emit('leaveRoom'); // Emit 'leaveRoom' event to the server
             window.location.reload(); // Reload the page on leave
         });
-
         // Function to send a message
         document.getElementById('messageForm').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -81,28 +69,10 @@
 
         // Event listener to handle incoming messages
         socket.on('message', function (data) {
-    activity.textContent = ""
-    const { name, text, time } = data
-    const li = document.createElement('li')
-    li.className = 'post'
-    if (name === nameInput.value) li.className = 'post post--left'
-    if (name !== nameInput.value && name !== 'Admin') li.className = 'post post--right'
-    if (name !== 'Admin') {
-        li.innerHTML = `<div class="post__header ${name === nameInput.value
-            ? 'post__header--user'
-            : 'post__header--reply'
-            }">
-        <span class="post__header--name">${name}</span> 
-        <span class="post__header--time">${time}</span> 
-        </div>
-        <div class="post__text">${text}</div>`
-    } else {
-        li.innerHTML = `<div class="post__text">${text}</div>`
-    }
-    document.querySelector('.chat-display').innerHTML += message;
-
-    chatDisplay.scrollTop = chatDisplay.scrollHeight
-})
+            const { name, text, time } = data;
+            const message = `<li>${name} (${time}): ${text}</li>`;
+            document.querySelector('.chat-display').innerHTML += message;
+        });
 
         // Event listener to update the user list
         socket.on('userList', function (data) {
@@ -113,7 +83,6 @@
             });
             document.querySelector('.user-list').innerHTML = userList;
         });
-
         // Event listener to update the room list
         socket.on('roomList', function (data) {
             const rooms = data.rooms;
@@ -123,18 +92,14 @@
             });
             document.querySelector('.room-list').innerHTML = roomList;
         });
-
         // Event listener to handle typing activity
         document.getElementById('message').addEventListener('keypress', function () {
             socket.emit('activity', document.getElementById('name').value);
         });
-
         // Event listener to display typing activity
         socket.on('activity', function (name) {
             document.querySelector('.activity').textContent = `${name} is typing...`;
         });
     </script>
-
 </body>
-
 </html>
