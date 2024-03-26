@@ -99,7 +99,7 @@
     } else {
         li.innerHTML = `<div class="post__text">${text}</div>`
     }
-    document.querySelector('.chat-display').appendChild(li)
+    document.querySelector('.chat-display').innerHTML += message;
 
     chatDisplay.scrollTop = chatDisplay.scrollHeight
 })
