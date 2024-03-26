@@ -89,7 +89,7 @@
         // Event listener to update the user list
         socket.on('userList', function (data) {
             const users = data.users;
-            let userList = '<em>Users in the room:</em><br>';
+            let userList = '<em>Connected:</em><br>';
             users.forEach(function (user) {
                 userList += `${user.name}<br>`;
             });
@@ -99,7 +99,7 @@
         // Event listener to update the room list
         socket.on('roomList', function (data) {
             const rooms = data.rooms;
-            let roomList = '<em>Active Rooms:</em><br>';
+            let roomList = '<em>Ticket ID:</em><br>';
             rooms.forEach(function (room) {
                 roomList += `${room}<br>`;
             });
