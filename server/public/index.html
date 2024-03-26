@@ -40,77 +40,78 @@
     </main>
 
     <!-- Inline script to initialize the Socket.io connection and handle events -->
-    <script>
-        const socket = io('https://livechattomer.onrender.com'); // Replace with your server URL
+  <!-- Inline script to initialize the Socket.io connection and handle events -->
+<script>
+    const socket = io('https://livechattomer.onrender.com'); // Replace with your server URL
 
-        // Function to join the chat room
-document.getElementById('joinForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-    const name = document.getElementById('name').value;
-    const room = document.getElementById('room').value;
-    socket.emit('enterRoom', { name, room });
+    // Function to join the chat room
+    document.getElementById('joinForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const room = document.getElementById('room').value;
+        socket.emit('enterRoom', { name, room });
 
-    // Hide the join button and show the leave button
-    document.getElementById('join').style.display = 'none';
-    document.getElementById('leave').style.display = 'inline-block';
-});
+        // Hide the join button and show the leave button
+        document.getElementById('join').style.display = 'none';
+        document.getElementById('leave').style.display = 'inline-block';
+    });
 
-// Function to leave the chat room
-document.getElementById('leave').addEventListener('click', function () {
-    socket.emit('leaveRoom');
+    // Function to leave the chat room
+    document.getElementById('leave').addEventListener('click', function () {
+        socket.emit('leaveRoom'); // Emit 'leaveRoom' event to the server
 
-    // Show the join button and hide the leave button
-    document.getElementById('join').style.display = 'inline-block';
-    document.getElementById('leave').style.display = 'none';
-});
+        // Show the join button and hide the leave button
+        document.getElementById('join').style.display = 'inline-block';
+        document.getElementById('leave').style.display = 'none';
+    });
 
+    // Function to send a message
+    document.getElementById('messageForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const message = document.getElementById('message').value;
+        const name = document.getElementById('name').value;
+        socket.emit('message', { name, text: message });
+        document.getElementById('message').value = ''; // Clear the input field
+    });
 
-        // Function to send a message
-        document.getElementById('messageForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const message = document.getElementById('message').value;
-            const name = document.getElementById('name').value;
-            socket.emit('message', { name, text: message });
-            document.getElementById('message').value = ''; // Clear the input field
+    // Event listener to handle incoming messages
+    socket.on('message', function (data) {
+        const { name, text, time } = data;
+        const message = `<li>${name} (${time}): ${text}</li>`;
+        document.querySelector('.chat-display').innerHTML += message;
+    });
+
+    // Event listener to update the user list
+    socket.on('userList', function (data) {
+        const users = data.users;
+        let userList = '<em>Users in the room:</em><br>';
+        users.forEach(function (user) {
+            userList += `${user.name}<br>`;
         });
+        document.querySelector('.user-list').innerHTML = userList;
+    });
 
-        // Event listener to handle incoming messages
-        socket.on('message', function (data) {
-            const { name, text, time } = data;
-            const message = `<li>${name} (${time}): ${text}</li>`;
-            document.querySelector('.chat-display').innerHTML += message;
+    // Event listener to update the room list
+    socket.on('roomList', function (data) {
+        const rooms = data.rooms;
+        let roomList = '<em>Active Rooms:</em><br>';
+        rooms.forEach(function (room) {
+            roomList += `${room}<br>`;
         });
+        document.querySelector('.room-list').innerHTML = roomList;
+    });
 
-        // Event listener to update the user list
-        socket.on('userList', function (data) {
-            const users = data.users;
-            let userList = '<em>Users in the room:</em><br>';
-            users.forEach(function (user) {
-                userList += `${user.name}<br>`;
-            });
-            document.querySelector('.user-list').innerHTML = userList;
-        });
+    // Event listener to handle typing activity
+    document.getElementById('message').addEventListener('keypress', function () {
+        socket.emit('activity', document.getElementById('name').value);
+    });
 
-        // Event listener to update the room list
-        socket.on('roomList', function (data) {
-            const rooms = data.rooms;
-            let roomList = '<em>Active Rooms:</em><br>';
-            rooms.forEach(function (room) {
-                roomList += `${room}<br>`;
-            });
-            document.querySelector('.room-list').innerHTML = roomList;
-        });
+    // Event listener to display typing activity
+    socket.on('activity', function (name) {
+        document.querySelector('.activity').textContent = `${name} is typing...`;
+    });
+</script>
 
-        // Event listener to handle typing activity
-        document.getElementById('message').addEventListener('keypress', function () {
-            socket.emit('activity', document.getElementById('name').value);
-        });
-
-        // Event listener to display typing activity
-        socket.on('activity', function (name) {
-            document.querySelector('.activity').textContent = `${name} is typing...`;
-        });
-    </script>
 </body>
 
 </html>
