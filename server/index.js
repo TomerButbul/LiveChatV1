@@ -155,3 +155,13 @@ function getUsersInRoom(room) {
 function getAllActiveRooms() {
     return Array.from(new Set(UsersState.users.map(user => user.room)))
 }
+// Function to leave the chat room
+function leaveChatRoom() {
+    socket.emit('leaveRoom');
+    // Add any additional cleanup or actions here if needed
+}
+
+// Event listener for the leave button
+document.getElementById('leave').addEventListener('click', function () {
+    leaveChatRoom();
+});
