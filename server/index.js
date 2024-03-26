@@ -160,8 +160,3 @@ function leaveChatRoom() {
     socket.emit('leaveRoom');
     // Add any additional cleanup or actions here if needed
 }
-
-// Event listener for the leave button
-document.getElementById('leave').addEventListener('click', function () {
-    leaveChatRoom();
-});
