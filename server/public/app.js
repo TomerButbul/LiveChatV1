@@ -42,7 +42,7 @@ msgInput.addEventListener('keypress', () => {
     socket.emit('activity', nameInput.value)
 })
 //leave room
-ffunction leaveChatRoom(socketId) {
+function leaveChatRoom(socketId) {
     const user = getUser(socketId);
     if (user) {
         const room = user.room;
