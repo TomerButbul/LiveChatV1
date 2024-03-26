@@ -57,8 +57,8 @@
     });
 
     // Function to leave the chat room
-    document.getElementById('leave').addEventListener('click', function () {
-        socket.leave('1'); // Emit 'leaveRoom' event to the server
+    document.getElementById('leave').addEventListener('click', function (e) {
+        socket.emit('room'); // Emit 'leaveRoom' event to the server
 
         // Show the join button and hide the leave button
         document.getElementById('join').style.display = 'inline-block';
