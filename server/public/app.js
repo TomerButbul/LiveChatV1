@@ -8,6 +8,7 @@ const activity = document.querySelector('.activity')
 const usersList = document.querySelector('.user-list')
 const roomList = document.querySelector('.room-list')
 const chatDisplay = document.querySelector('.chat-display')
+const leaveButton = document.createElement('button');
 
 function sendMessage(e) {
     e.preventDefault()
@@ -40,6 +41,18 @@ document.querySelector('.form-join')
 msgInput.addEventListener('keypress', () => {
     socket.emit('activity', nameInput.value)
 })
+//leave room
+function leaveRoom(e) {
+    socket.emit('leaveRoom');
+    usersList.textContent = ''; // Clear the user list
+    roomList.textContent = ''; // Clear the room list
+}
+// Add a button for leaving the chat room
+
+leaveButton.textContent = 'Leave Room';
+leaveButton.addEventListener('click', leaveRoom);
+document.body.appendChild(leaveButton);
+
 
 // Listen for messages 
 socket.on("message", (data) => {
