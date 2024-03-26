@@ -56,14 +56,12 @@
 
          // Event listener to handle room full event
          socket.on('roomFull', function () {
-        // Hide everything except the leave button
-         </form>
-        <ul class="chat-display" style="display: none;"></ul>
-        <p class="user-list" style="display: none;"></p>
-        <p class="room-list" style="display: none;"></p>
-        <p class="activity" style="display: none;"></p>
-        <!-- Add id to the form for sending messages -->
-        <form id="messageForm" class="form-msg" style="display: none;">
+             <!-- Add this section inside the <script> tag -->
+        // Event listener to handle room full event
+        socket.on('roomFull', function () {
+        alert('Sorry, the room is full. Please try another room.'); // Display an alert message
+        window.location.reload(); // Reload the page to allow joining another room
+        });
         
          });
         // Function to leave the chat room
