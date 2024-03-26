@@ -53,6 +53,18 @@
             document.querySelector('.room-list').style.display = 'block';
             document.querySelector('.activity').style.display = 'block';
         });
+
+         // Event listener to handle room full event
+         socket.on('roomFull', function () {
+        // Hide everything except the leave button
+        document.getElementById('joinForm').style.display = 'none';
+        document.querySelector('.chat-display').style.display = 'none';
+        document.querySelector('.user-list').style.display = 'none';
+        document.querySelector('.room-list').style.display = 'none';
+        document.querySelector('.activity').style.display = 'none';
+        document.getElementById('leave').style.display = 'block';
+        
+         });
         // Function to leave the chat room
         document.getElementById('leave').addEventListener('click', function () {
             socket.emit('leaveRoom'); // Emit 'leaveRoom' event to the server
