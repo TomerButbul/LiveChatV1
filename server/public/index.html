@@ -79,7 +79,8 @@
         });
 
         // Event listener to handle incoming messages
-       socket.on("message", (data) => {
+      socket.on('message', function (data) {
+
     activity.textContent = ""
     const { name, text, time } = data
     const message = `<li>${name} (${time}): ${text}</li>`;
