@@ -104,7 +104,7 @@
            const message = `<li>${name} (${time}): ${text}</li>`;
             document.querySelector('.chat-display').innerHTML += message;
         });
-})
+
         // Event listener to update the user list
         socket.on('userList', function (data) {
             const users = data.users;
