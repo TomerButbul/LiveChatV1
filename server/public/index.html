@@ -85,8 +85,8 @@
     const li = document.createElement('li')
     li.className = 'post'
     if (name === nameInput.value) li.className = 'post post--left'
-    if (name !== nameInput.value && name !== 'Admin') li.className = 'post post--right'
-    if (name !== 'Admin') {
+    if (name !== nameInput.value && name !== 'HelpDesk') li.className = 'post post--right'
+    if (name !== 'HelpDesk') {
         li.innerHTML = `<div class="post__header ${name === nameInput.value
             ? 'post__header--user'
             : 'post__header--reply'
@@ -101,6 +101,9 @@
     document.querySelector('.chat-display').appendChild(li)
 
     chatDisplay.scrollTop = chatDisplay.scrollHeight
+           const message = `<li>${name} (${time}): ${text}</li>`;
+            document.querySelector('.chat-display').innerHTML += message;
+        });
 })
         // Event listener to update the user list
         socket.on('userList', function (data) {
