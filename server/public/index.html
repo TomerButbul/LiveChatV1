@@ -80,10 +80,29 @@
 
         // Event listener to handle incoming messages
         socket.on('message', function (data) {
-            const { name, text, time } = data;
-            const message = `<li>${name} (${time}): ${text}</li>`;
-            document.querySelector('.chat-display').innerHTML += message;
-        });
+  const { name, text, time } = data;
+  const li = document.createElement('li');
+  li.className = 'post';
+
+  // Add conditional logic for user/admin messages as in the provided JavaScript
+  if (name === nameInput.value) {
+    li.classList.add('post--left'); // Add class for left alignment
+  } else {
+    li.classList.add('post--right'); // Add class for right alignment
+  }
+
+  const messageContent = `
+    <div class="post__header">
+      <span class="post__header--name">${name}</span>
+      <span class="post__header--time">${time}</span>
+    </div>
+    <div class="post__text">${text}</div>
+  `;
+
+  li.innerHTML = messageContent;
+  document.querySelector('.chat-display').appendChild(li);
+});
+
 
         // Event listener to update the user list
         socket.on('userList', function (data) {
