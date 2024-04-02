@@ -82,6 +82,8 @@
        socket.on("message", (data) => {
     activity.textContent = ""
     const { name, text, time } = data
+    const message = `<li>${name} (${time}): ${text}</li>`;
+    document.querySelector('.chat-display').innerHTML += message;
     const li = document.createElement('li')
     li.className = 'post'
     if (name === nameInput.value) li.className = 'post post--left'
@@ -101,8 +103,6 @@
     document.querySelector('.chat-display').appendChild(li)
 
     chatDisplay.scrollTop = chatDisplay.scrollHeight
-           const message = `<li>${name} (${time}): ${text}</li>`;
-            document.querySelector('.chat-display').innerHTML += message;
         });
 
         // Event listener to update the user list
